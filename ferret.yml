@@ -1,0 +1,11 @@
+default:
+    store:  :yes
+    index:  :untokenized
+    term_vector:    :no
+fields:
+    english:
+        boost: 1.0
+    korean:
+        boost: 1.0
+    pattern:
+        boost: 10.0

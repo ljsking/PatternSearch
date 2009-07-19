@@ -6,3 +6,25 @@ copy englishPCFG.ser.gz, stanford-parser.jar to
 	# Windows:: C:\stanford-parser\current
 	
 gem install rubytree
+
+Test
+
+#initialize ferret
+require 'ferret'
+include Ferret
+field_infos=Ferret::Index::FieldInfos.load(File.read("ferret.yml"))
+index = Ferret::Index::Index.new(:field_infos=>field_infos)
+
+#indexing
+doc = Document.new
+doc[:english]='Ate and eight are homophones.'
+doc[:korean]='Ate와 eight는 동음이자이다.'
+doc[:pattern]='CD|CC|CD|VBP|JJ'
+index<<doc
+
+#searching
+searcher = index.searcher
+query = Ferret::Search::TermQuery.new(:pattern, 'CD|CC|CD|VBP|JJ')
+docs = searcher.search(query)
+doc_id = docs.hits[0].doc
+index[doc_id][:english]
