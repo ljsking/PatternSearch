@@ -1,0 +1,8 @@
+Preparation
+
+gem install stanfordparser
+copy englishPCFG.ser.gz, stanford-parser.jar to
+	# UNIX:: /usr/local/stanford-parser/current
+	# Windows:: C:\stanford-parser\current
+	
+gem install rubytree
