@@ -1,13 +1,33 @@
-Preparation
+﻿Preparation
+install ruby 1.8.x
 
 gem install stanfordparser
 copy englishPCFG.ser.gz, stanford-parser.jar to
 	# UNIX:: /usr/local/stanford-parser/current
 	# Windows:: C:\stanford-parser\current
+	from http://nlp.stanford.edu/software/stanford-parser-2008-10-26.tgz
+
+gem install rjb
+> 2
+
+gem install treebank
 	
 gem install rubytree
 
-Test
+gem install ferret
+> 2(ferret 0.11.5 (mswin32)
+
+install jdk
+
+set JAVA_HOME to C:\Program Files\Java\jdk1.6.0_14
+
+Test1(unit test)
+
+cd test
+ruby treebank_test.rb
+
+Test2(using ferret)
+in PatternSearch directory
 
 #initialize ferret
 require 'ferret'
