@@ -14,7 +14,14 @@ def usage(message = nil)
 end
 
 usage() if ARGV.size != 2
-usage("Directory '#{ARGV[0]}' doesn't exist.") unless File.directory?(ARGV[0])
+files = []
+if File.directory?(ARGV[0])
+  files = Dir["#$ARGV[0]/**/*.ptxt"]
+elsif File.file?(ARGV[0])
+  files << ARGV[0]
+else
+  usage("Directory '#{ARGV[0]}' doesn't exist.")
+end
 
 $data_dir, $index_dir = ARGV
 
@@ -29,11 +36,10 @@ index = Index.new(:path => $index_dir,
                   :create => true,
                   :field_infos=>field_infos)
 
-tagger = Tagger.new              
-parser = PTxt_Parser.new(tagger)
+parser = PTxt_Parser.new
 total_count = 0
 
-Dir["#$data_dir/**/*.ptxt"].each do |file_name|
+files.each do |file_name|
   puts file_name
   models, count = parser.parse(file_name)
   total_count+=count
@@ -48,4 +54,4 @@ Dir["#$data_dir/**/*.ptxt"].each do |file_name|
 end
 index.optimize()
 index.close()
-print "Exception: #{count}"
+print "Exception: #{total_count}"
