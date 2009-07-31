@@ -1,4 +1,11 @@
+require 'ptxt'
+require 'sentence'
+require 'tagger'
+
 class PTxt_Parser
+  def initialize(pos_tagger)
+    @tagger = pos_tagger
+  end
   def parse(file)
     ptxt = PTxt.new
     counter = 1
@@ -7,11 +14,12 @@ class PTxt_Parser
     	while (line = file.gets)
     	  if line[0..-3] == '<c>'
     		  korean = file.gets[0..-3]
-    		  english = []
+    		  #english = []
     		  while ((line = file.gets)[0..-3]!='</c>')
-    		    english<<line[0..-3]
+    		    english=line[0..-3]
   		    end
-  		    stnc = Sentence.new(korean, english)
+  		    pattern = @tagger.tag(english)
+  		    stnc = Sentence.new(korean, english, pattern)
   		    ptxt.add(stnc)
   		    counter = counter+1
   		  end
@@ -21,7 +29,7 @@ class PTxt_Parser
     	puts "Exception: #{err}"
     	err
     end
-    return ptxt
+    return ptxt, counter
   end
 end
 

@@ -1,5 +1,5 @@
 class PTxt
-  attr_accessor :filename
+  attr_accessor :filename, :sentences
   def initialize
     @sentences = []
   end
