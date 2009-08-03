@@ -17,12 +17,12 @@ usage() if ARGV.size != 2
 $data_dir, $index_dir = ARGV
 
 files = []
-if File.directory?(ARGV[0])
+if File.directory?($data_dir)
   files = Dir["#$data_dir/**/*.ptxt"]
-elsif File.file?(ARGV[0])
+elsif File.file?($data_dir)
   files << ARGV[0]
 else
-  usage("Directory '#{ARGV[0]}' doesn't exist.")
+  usage("Directory '#{$data_dir}' doesn't exist.")
 end
 
 begin
