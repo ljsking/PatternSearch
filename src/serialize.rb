@@ -20,13 +20,20 @@ else
   usage("Directory '#{$data_dir}' doesn't exist.")
 end
 
+begin
+  FileUtils.mkdir_p('../dump/')
+rescue
+  usage("Can't create index directory '../dump/'.")
+end
+
 parser = PTxt_Parser.new
 
 files.each do |file_name|
   puts file_name
   models, count = parser.parse(file_name)
-  total_count+=count
-  File.open("../dump/#{file_name}.dump", 'w+') do |f|
+  path, fname = File.split(file_name)
+  name = File.basename(path)+'_'+fname
+  File.open("../dump/#{name}.dump", 'w') do |f|
     models.sentences.each do |sentence|
       Marshal.dump(sentence, f)
     end
