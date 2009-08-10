@@ -20,11 +20,10 @@ files = []
 if File.directory?($data_dir)
   files = Dir["#$data_dir/**/*.ptxt"]
 elsif File.file?($data_dir)
-  files << ARGV[0]
+  files << $data_dir
 else
   usage("Directory '#{$data_dir}' doesn't exist.")
 end
-
 begin
   FileUtils.mkdir_p($index_dir)
 rescue

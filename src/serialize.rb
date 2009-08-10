@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'ptxt_parser'
+require 'logger'
+
+$LOG = Logger.new('log_file.log', 'monthly') 
 
 def usage(message = nil)
   puts message if message
-  puts "ruby #{File.basename(__FILE__)} <data dir> <dest dir>"
+  puts "ruby #{File.basename(__FILE__)} <data dir>"
   exit(1)
 end
 
@@ -15,7 +18,7 @@ files = []
 if File.directory?($data_dir)
   files = Dir["#$data_dir/**/*.ptxt"]
 elsif File.file?($data_dir)
-  files << ARGV[0]
+  files << $data_dir
 else
   usage("Directory '#{$data_dir}' doesn't exist.")
 end
