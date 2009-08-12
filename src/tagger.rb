@@ -10,8 +10,6 @@ class Tagger
   end
   def tag(sentence)
     rz = []
-    #
-    #puts "tag with #{sentence} in #{sentence.class}"
     begin
       root = @parser.apply(sentence)
     rescue => err
@@ -23,10 +21,6 @@ class Tagger
     myTreeRoot = Tree::TreeNode.new(@id, root.label.to_s)
     @id += 1
     mktree(root, myTreeRoot)
-    #
-    #	
-    #	err
-    #end
     return myTreeRoot
   end
   def mktree(n, parent)

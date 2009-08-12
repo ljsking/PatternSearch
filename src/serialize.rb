@@ -41,5 +41,6 @@ files.each do |file_name|
       Marshal.dump(sentence, f)
     end
   end
+  puts "end with #{count}"
 end
 

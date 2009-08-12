@@ -40,17 +40,11 @@ class PTxt_Parser
 		    end
 		    orig_englishes.each do |orig_english|
 		      orig_english=remove_uglycode(orig_english)
-  		    sentences = @tagger.split_by_sentence(orig_english)
-  		    
-  		    sentences.each do |sentence|
-  		      english = sentence.to_s
-  		      puts "tag with #{english} with #{english.class}"
-  		      pattern = @tagger.tag(english)
-    		    stnc = Sentence.new(korean, english, pattern, orig_english)
-    		    ptxt.add(stnc)
-    		    #$stderr.print '.'
-    		    counter = counter+1
-  	      end
+		      english = orig_english
+		      pattern = @tagger.tag(english)
+  		    stnc = Sentence.new(korean, english, pattern, orig_english)
+  		    ptxt.add(stnc)
+  		    counter = counter+1
 	      end
 		  end
   	end

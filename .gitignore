@@ -3,4 +3,5 @@ index
 .DS_Store
 data
 *.tmproj
-dump
+dump*
+*.log
