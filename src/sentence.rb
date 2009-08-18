@@ -12,8 +12,10 @@ class Sentence
   
   def pattern
     rz=[]
-    @tree.each_leaf() {|node| rz<<node.parent.content}
-    rz.join('|')
+    @tree.each_leaf() do |node|
+      rz<<node.parent.content unless node.parent == nil
+    end
+    rz.join('_')
   end
    
 end
