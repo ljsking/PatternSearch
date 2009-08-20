@@ -30,7 +30,11 @@ class Tagger
       parent<< newNode
       mktree(n, newNode) }
   end
-  def split_by_sentence(txt)
-    @preproc.getSentencesFromString(txt)
+  def split(txt)
+    sentences = []
+    @preproc.getSentencesFromString(txt).each do |sentence|
+      sentences<<sentence.join(" ")
+    end
+    return sentences
   end
 end
