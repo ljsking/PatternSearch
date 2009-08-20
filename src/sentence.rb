@@ -8,14 +8,14 @@ class Sentence
     @korean=kor
     @tree=tree
     @document=document
+    @pattern = []
+    @tree.each_leaf() do |node|
+      @pattern<<node.parent.content unless node.parent == nil
+    end
   end
   
   def pattern
-    rz=[]
-    @tree.each_leaf() do |node|
-      rz<<node.parent.content unless node.parent == nil
-    end
-    rz.join('_')
+    @pattern.join('_')
   end
    
 end
