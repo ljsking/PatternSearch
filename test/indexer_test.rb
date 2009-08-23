@@ -34,7 +34,25 @@ class IndexerTest < Test::Unit::TestCase
     assert_equal(1, nodes.size)
     assert_equal('4', nodes[0].name)
   end
-  def test_make_pattern
-    expect = ['GC_C2', 'C1_C2', 'R']
+  def test_make_patterns
+    groups = @@indexer.make_group(@root)
+    node = groups[0][0][0]
+    assert_equal('4', node.name)
+    assert_equal('GC1', node.content)
+    parent = node.parent
+    node.removeFromParent!
+    pattern = @@indexer.make_pattern(@root)
+    assert_equal('C1_C2', pattern)
+    
+    parent<<node
+    pattern = @@indexer.make_pattern(@root)
+    assert_equal('GC1_C2', pattern)
+    
+    patterns = @@indexer.make_patterns(@root)
+    
+    assert_equal(3, patterns.size)
+    assert_equal(1, patterns["GC1_C2"])
+    assert_equal(1, patterns["C1_C2"])
+    assert_equal(1, patterns["R"])
   end
 end
