@@ -6,3 +6,4 @@ data
 dump*
 *.log
 *.db
+*.csv

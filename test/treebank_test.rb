@@ -5,7 +5,7 @@ require '../src/sentence'
 class TreeBankTest < Test::Unit::TestCase
   @@tagger = Tagger.new
   def test_get_leafnode
-    english = 'Ate and eight are homophones.'
+    english = 'Ate and eight are homophones .'
     tree = @@tagger.tag(english)
     stc = Sentence.new('', english, tree)
     assert_equal 'CD_CC_CD_VBP_JJ_.', stc.pattern
@@ -22,4 +22,5 @@ class TreeBankTest < Test::Unit::TestCase
     assert_equal(1, englishs.size)
     assert_equal('Ate and eight are homophones .', englishs[0])
   end
+  
 end

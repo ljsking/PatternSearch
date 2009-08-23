@@ -13,7 +13,6 @@ class PTxt_Parser
     sentence.each_byte do |c|
       _sentence<<c.chr if c<128
     end
-    #puts "before #{sentence} after #{_sentence}"
     return _sentence
   end
   def parse(file_name)
@@ -40,11 +39,12 @@ class PTxt_Parser
 		    end
 		    orig_englishes.each do |orig_english|
 		      orig_english=remove_uglycode(orig_english)
-		      english = orig_english
-		      pattern = @tagger.tag(english)
-  		    stnc = Sentence.new(korean, english, pattern, orig_english)
-  		    ptxt.add(stnc)
-  		    counter = counter+1
+		      @tagger.split(orig_english).each do |english|
+		        pattern = @tagger.tag(english)
+    		    stnc = Sentence.new(korean, english, pattern, orig_english)
+    		    ptxt.add(stnc)
+    		    counter = counter+1
+		      end
 	      end
 		  end
   	end

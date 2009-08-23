@@ -50,13 +50,13 @@ table.each do |key, value|
   end
 end
 
-tags.each do |key, value|
-  rows = db.execute("SELECT * FROM tags WHERE tag='#{key}'")
-  if rows.size == 0
-    db.execute("INSERT INTO tags (tag, count) VALUES ('#{key}', #{value})")
-  elsif rows.size == 1
-    db.execute("UPDATE tags SET count=#{rows[0][1].to_i+value} WHERE tag='#{key}'")
-  else
-    puts "Exception: #{key} has many rows"
-  end
-end
+#tags.each do |key, value|
+#  rows = db.execute("SELECT * FROM tags WHERE tag='#{key}'")
+#  if rows.size == 0
+#    db.execute("INSERT INTO tags (tag, count) VALUES ('#{key}', #{value})")
+#  elsif rows.size == 1
+#    db.execute("UPDATE tags SET count=#{rows[0][1].to_i+value} WHERE tag='#{key}'")
+#  else
+#    puts "Exception: #{key} has many rows"
+#  end
+#end
