@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'test/unit'
-require '../src/tagger'
-require '../src/sentence'
+require 'src/tagger'
+require 'src/sentence'
 require 'tree'
 
 class SerializeTest < Test::Unit::TestCase
@@ -15,6 +15,6 @@ class SerializeTest < Test::Unit::TestCase
     
     data = Marshal.dump(stc)
     new_stc = Marshal.load(data)
-    assert_equal 'CD|CC|CD|VBP|JJ|.', new_stc.pattern
+    assert_equal 'CD_CC_CD_VBP_JJ_.', new_stc.pattern
   end
 end

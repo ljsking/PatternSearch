@@ -1,6 +1,6 @@
 require 'test/unit'
-require '../src/tagger'
-require '../src/sentence'
+require 'src/tagger'
+require 'src/sentence'
 
 class TreeBankTest < Test::Unit::TestCase
   @@tagger = Tagger.new

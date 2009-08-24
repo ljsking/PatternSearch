@@ -5,31 +5,44 @@ class Indexer
   def add_index(file)
 
   end
-  def make_group(root)
-    groups = []
-    group = []
-    parent = nil
-    height = 1
-    
-    root.breadth_each do |node|
-      if parent != node.parent
-        groups << [group, height]
+  def set_height(tree)
+    nodes = {}
+    tree.breadth_each do |node|
+      if node.isRoot?
+        height=1
+      else
         parent = node.parent
-        group = []
-        height += 1
+        arr = nodes[parent.name]
+        parent_height = arr[0]
+        height = parent_height+1
       end
-      group << node
+      nodes[node.name] = [height, node]
     end
-    groups<<[group, height]
-    return groups.reverse
+    return nodes
+  end
+  def make_group(root)
+    groups={}
+    nodes = set_height(root)
+    nodes.each_value do |value|
+      height = value[0]
+      node = value[1]
+      arr=groups[height]
+      if arr==nil
+        arr=[]
+        groups[height]=arr
+      end
+      arr<<node
+    end
+    return groups
   end
   def make_patterns(tree)
     groups = make_group(tree)
     patterns = {}
     pattern = make_pattern(tree)
     patterns[pattern] = 1
-    groups.each do |group|
-      nodes = group[0]
+    
+    (1..groups.size).to_a.reverse.each do |height|
+      nodes = groups[height]
       nodes.each do |node|
         parent = node.parent
         tmps = []
@@ -41,13 +54,15 @@ class Indexer
           pattern = make_pattern(tree)
           patterns[pattern] = 1
           tmps.each do |child|
-            parent.children<<child
+            parent<<child
           end
         end
       end
       nodes.each do |node|
         node.removeFromParent!
       end
+      pattern = make_pattern(tree)
+      patterns[pattern] = 1
     end
     return patterns
   end
