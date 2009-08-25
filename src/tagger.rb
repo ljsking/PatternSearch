@@ -21,6 +21,9 @@ class Tagger
     myTreeRoot = Tree::TreeNode.new(@id, root.label.to_s)
     @id += 1
     mktree(root, myTreeRoot)
+    myTreeRoot.each_leaf do |leaf|
+      leaf.removeFromParent!
+    end
     return myTreeRoot
   end
   def mktree(n, parent)

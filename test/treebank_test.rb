@@ -8,7 +8,7 @@ class TreeBankTest < Test::Unit::TestCase
     english = 'Ate and eight are homophones .'
     tree = @@tagger.tag(english)
     stc = Sentence.new('', english, tree)
-    assert_equal 'CD_CC_CD_VBP_JJ_.', stc.pattern
+    assert_equal 'CD_CC_CD_VBP_JJ_.', stc.make_pattern
   end
   def test_split_sentences
     english = 'I think it looks fabulous. I love your hair like that.'
