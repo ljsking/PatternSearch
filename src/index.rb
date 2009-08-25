@@ -9,47 +9,33 @@ include Ferret::Index
 
 def usage(message = nil)
   puts message if message
-  puts "ruby #{File.basename(__FILE__)} <data dir> <index dir>"
+  puts "ruby #{File.basename(__FILE__)} <file name>"
   exit(1)
 end
 
-usage() if ARGV.size != 2
-$data_dir, $index_dir = ARGV
+$file_name = ARGV[0]
 
-files = []
-if File.directory?($data_dir)
-  files = Dir["#$data_dir/**/*.ptxt"]
-elsif File.file?($data_dir)
-  files << $data_dir
-else
-  usage("Directory '#{$data_dir}' doesn't exist.")
-end
-begin
-  FileUtils.mkdir_p($index_dir)
-rescue
-  usage("Can't create index directory '#$index_dir'.")
+f = File.new($file_name)
+arr = []
+while not f.eof?
+  arr << Marshal.load(f)
 end
 
 field_infos=Index::FieldInfos.load(File.read("../ferret.yml"))
-index = Index.new(:path => $index_dir,
-                  :create => true,
+index = Index.new(:path => "../index",
+                  :create => false,
                   :field_infos=>field_infos)
 
 parser = PTxt_Parser.new
 total_count = 0
 
-files.each do |file_name|
-  puts file_name
-  models, count = parser.parse(file_name)
-  total_count+=count
-  models.sentences.each do |sentence|
-    doc = Document.new
-    doc[:english]=sentence.english
-    doc[:korean]=sentence.korean
-    doc[:pattern]=sentence.pattern
-    index<<doc
-  end
-  #index << {:file_name => file_name, :content => File.read(file_name)}
+arr.each do |stc|
+  total_count+=arr.size
+  doc = Document.new
+  doc[:english]=stc.english
+  doc[:korean]=stc.korean
+  doc[:patterns]=Field.new(stc.patterns)
+  index<<doc
 end
 index.optimize()
 index.close()

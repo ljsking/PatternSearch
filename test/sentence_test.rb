@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'test/unit'
 require 'src/sentence'
-require 'src/tagger'
 
 class SentenceTest < Test::Unit::TestCase
   def setup

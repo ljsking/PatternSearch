@@ -7,5 +7,5 @@ fields:
         boost: 1.0
     korean:
         boost: 1.0
-    pattern:
+    patterns:
         boost: 10.0
