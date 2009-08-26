@@ -2,8 +2,7 @@
 require 'rubygems'
 require 'ferret'
 require 'fileutils'
-require 'ptxt_parser'
-require 'tagger'
+require 'sentence'
 include Ferret
 include Ferret::Index
 
@@ -20,13 +19,13 @@ arr = []
 while not f.eof?
   arr << Marshal.load(f)
 end
+f.close
 
 field_infos=Index::FieldInfos.load(File.read("../ferret.yml"))
 index = Index.new(:path => "../index",
                   :create => false,
                   :field_infos=>field_infos)
 
-parser = PTxt_Parser.new
 total_count = 0
 
 arr.each do |stc|
