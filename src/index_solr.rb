@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'solr'
+require 'tree_bank'
 require 'sentence'
 
 def usage(message = nil)
