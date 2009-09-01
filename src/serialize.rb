@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'rubygems'
+require 'tree_bank'
 require 'ptxt_parser'
 require 'logger'
 

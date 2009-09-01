@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'test/unit'
 require 'src/tagger'
+require 'src/tree_bank'
 require 'src/sentence'
 require 'tree'
 
