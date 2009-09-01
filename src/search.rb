@@ -1,28 +1,24 @@
 #!/usr/bin/env ruby
 require 'rubygems'
-require 'ferret'
-require 'fileutils'
-include Ferret
-include Ferret::Index
+require 'tagger'
+require 'tree_bank'
+require 'solr'
 
-def usage(message = nil)
-  puts message if message
-  puts "ruby #{File.basename(__FILE__)} <index dir> <search phrase>"
-  exit(1)
-end 
-
-usage() if ARGV.size != 2
-usage("Index '#{ARGV[0]}' doesn't exist.") unless File.directory?(ARGV[0])
-
-$index_dir, $search_phrase = ARGV
-
-index = Index.new(:path => $index_dir)
-
-results = []
-total_hits = index.search_each($search_phrase) do |doc_id, score|
-  results << "  #{score} - #{index[doc_id][:file_name]}"
+print "Pattern search:"
+@tagger = Tagger.new
+@conn = Solr::Connection.new('http://localhost:8983/solr')
+while english = gets
+  treebank = TreeBank.new(@tagger.tag(english))
+  patterns = treebank.make_patterns
+  sorted = (patterns.sort {|a,b| a[1]<=>b[1]} ).reverse
+  qeuries=[]
+  sorted.each do |item|
+    pattern=item[0]
+    point=item[1]
+    qeuries<<"(patterns:#{pattern})^#{point}" if point>0.1
+  end
+  response = @conn.query(qeuries.join(" "))
+  puts "hits size: #{response.hits.size}"
+  puts "best[#{response.hits[0]['score']}]:#{response.hits[0]['english']}"
+  print "Pattern search:"
 end
-
-puts "#{total_hits} matched your query:\n" + results.join("\n")
-
-index.close()
