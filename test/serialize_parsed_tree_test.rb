@@ -17,5 +17,6 @@ class SerializeTest < Test::Unit::TestCase
     data = Marshal.dump(stc)
     new_stc = Marshal.load(data)
     assert_equal 'CD_CC_CD_VBP_JJ_.', new_stc.make_pattern
+    assert_equal 'CD_CC_CD_VBP_JJ_.', new_stc.make_pattern
   end
 end

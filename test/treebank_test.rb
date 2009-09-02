@@ -9,6 +9,7 @@ class TreeBankTest < Test::Unit::TestCase
     tree << Tree::TreeNode.new("3", "C2")
     @simple = TreeBank.new(tree)
     
+    #How could you say such a terrible thing to your boss ?
     one = Tree::TreeNode.new("1", "Root")
     two = Tree::TreeNode.new("2", "SBARQ")
     three = Tree::TreeNode.new("3", "WHADVP")
@@ -134,6 +135,15 @@ class TreeBankTest < Test::Unit::TestCase
     assert_equal(true, exp.include?(group[0].content))
   end
   def test_make_patterns
+    patterns = @simple.make_patterns
+    
+    assert_equal(3, patterns.size)
+    assert(0<patterns["GC1_C2"])
+    assert(0<patterns["C1_C2"])
+    assert(0<patterns["R"])
+  end
+  def test_make_patterns_twice
+    patterns = @simple.make_patterns
     patterns = @simple.make_patterns
     
     assert_equal(3, patterns.size)

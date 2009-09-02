@@ -4,6 +4,7 @@ require 'tree'
 class TreeBank
   def initialize(tree)
     @tree = tree
+    @patterns = nil
   end
   def patterns
     rz = []
@@ -47,45 +48,47 @@ class TreeBank
     return groups
   end
   def make_patterns
-    groups = make_group
+    if @patterns == nil
+      groups = make_group
     
-    step = 1.0/groups.size
-    point = 1.0
+      step = 1.0/groups.size
+      point = 1.0
     
-    patterns = {}
-    pattern = make_pattern
-    patterns[pattern] = point
+      @patterns = {}
+      pattern = make_pattern
+      @patterns[pattern] = point
     
-    (1..groups.size).to_a.reverse.each do |height|
-      nodes = groups[height]
-      point -= step/2
-      nodes.each do |node|
-        parent = node.parent
-        tmps = []
-        if parent != nil
-          parent.children.each do |child|
-            tmps<<child
-          end
-          parent.removeAll!
-          pattern = make_pattern
-          patterns[pattern] = point
-          tmps.each do |child|
-            parent<<child
+      (1..groups.size).to_a.reverse.each do |height|
+        nodes = groups[height]
+        point -= step/2
+        nodes.each do |node|
+          parent = node.parent
+          tmps = []
+          if parent != nil
+            parent.children.each do |child|
+              tmps<<child
+            end
+            parent.removeAll!
+            pattern = make_pattern
+            @patterns[pattern] = point
+            tmps.each do |child|
+              parent<<child
+            end
           end
         end
+        nodes.each do |node|
+          node.removeFromParent!
+        end
+        point -= step/2
+        pattern = make_pattern
+        @patterns[pattern] = point
       end
-      nodes.each do |node|
-        node.removeFromParent!
-      end
-      point -= step/2
-      pattern = make_pattern
-      patterns[pattern] = point
     end
-    return patterns
+    return @patterns
   end
   def make_pattern
     tags = []
-    @tree.each_leaf() do |node|
+    @tree.each_leaf do |node|
       tags<<node.content
     end
     return tags.join("_")
