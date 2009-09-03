@@ -21,9 +21,13 @@ end
 f.close
 conn = Solr::Connection.new('http://localhost:8983/solr', :autocommit => :off)
 arr.each do |stc|
+  verbs = stc.verbs.join(" ")
+  patterns = stc.patterns.join(" ")
+  #puts "#{stc.english} has verbs: #{stc.verbs.join(" ")}"
   conn.add(:english => stc.english,
-            :korean =>stc.korean,
-            :patterns => stc.patterns.join(" "))
+           :korean =>stc.korean,
+           :verbs => verbs,
+           :patterns => patterns)
   total_count+=1
 end
 
