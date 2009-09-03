@@ -8,6 +8,8 @@ print "Pattern search:"
 @tagger = Tagger.new
 @conn = Solr::Connection.new('http://localhost:8983/solr')
 while english = gets
+  start_time = Time.now
+  
   rz=@tagger.split(english)
   english = rz[0]
   words = english.split(" ")
@@ -35,6 +37,8 @@ while english = gets
   verbs.each do |verb|
     qeuries<<"verbs:#{verb}"
   end
+  
+  puts "Searching time : #{Time.now-start_time} sec"
   
   response = @conn.query(qeuries.join(" "))
   puts "hits size: #{response.hits.size}"
