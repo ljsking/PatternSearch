@@ -23,31 +23,17 @@
 	Install jdk
 	set environment variable JAVA_HOME to C:\Program Files\Java\jdk1.6.0_xx
 
+9. Setup Solr
+	Download solr from http://apache.tt.co.kr/lucene/solr/1.3.0/apache-solr-1.3.0.zip
+	Configure solr server
+		copy scheme.xml
+	Start solr server
+		cd {solr root}/example
+		java -jar start.jar
+		http://localhost:8983/solr/admin/
 
-Test1(unit test)
+8. Install solr-ruby gem
+	gem install solr-ruby
 
-cd test
-ruby treebank_test.rb
 
-Test2(using ferret)
-in PatternSearch directory
-
-#initialize ferret
-require 'ferret'
-include Ferret
-field_infos=Ferret::Index::FieldInfos.load(File.read("ferret.yml"))
-index = Ferret::Index::Index.new(:field_infos=>field_infos)
-
-#indexing
-doc = Document.new
-doc[:english]='Ate and eight are homophones.'
-doc[:korean]='Ate와 eight는 동음이자이다.'
-doc[:pattern]='CD|CC|CD|VBP|JJ'
-index<<doc
-
-#searching
-searcher = index.searcher
-query = Ferret::Search::TermQuery.new(:pattern, 'CD|CC|CD|VBP|JJ')
-docs = searcher.search(query)
-doc_id = docs.hits[0].doc
-index[doc_id][:english]
+9. Do rake to test!
