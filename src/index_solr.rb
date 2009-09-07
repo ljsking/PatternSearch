@@ -10,6 +10,20 @@ def usage(message = nil)
   exit(1)
 end
 
+def add_index(conn, stc)
+  verbs = stc.verbs.join(" ")
+  patterns = stc.patterns.join(" ")
+  begin
+    conn.add(:english => stc.english,
+             :korean =>stc.korean,
+             :verbs => verbs,
+             :patterns => patterns)
+  rescue Timeout::Error => e
+    puts "Exception: index timeout error with #{e}"
+    add_index(conn, stc)
+  end
+end
+
 $file_name = ARGV[0]
 arr = []
 total_count = 0
@@ -21,13 +35,8 @@ end
 f.close
 conn = Solr::Connection.new('http://localhost:8983/solr', :autocommit => :off)
 arr.each do |stc|
-  verbs = stc.verbs.join(" ")
-  patterns = stc.patterns.join(" ")
   #puts "#{stc.english} has verbs: #{stc.verbs.join(" ")}"
-  conn.add(:english => stc.english,
-           :korean =>stc.korean,
-           :verbs => verbs,
-           :patterns => patterns)
+  add_index(conn, stc)
   total_count+=1
 end
 
