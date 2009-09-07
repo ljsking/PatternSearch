@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'test/unit'
 require 'tree'
-require '../src/tree_bank'
-require '../src/sentence'
+require 'src/tree_bank'
+require 'src/sentence'
 require 'solr'
 
 class SolrTest < Test::Unit::TestCase
