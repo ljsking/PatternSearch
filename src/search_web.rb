@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'haml'
+require 'Sass'
 require 'tagger'
 require 'tree_bank'
 require 'solr'
@@ -26,7 +27,6 @@ def search(english)
   end
   
   qeuries=[]
-  puts "Searching #{sorted[0][0]}"
   sorted.each do |item|
     pattern=item[0]
     point=item[1]
@@ -55,6 +55,7 @@ get '/search' do
 end
 
 get '/stylesheet.css' do
-  header 'Content-Type' => 'text/css; charset=utf-8'
+  headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :stylesheet
 end
+

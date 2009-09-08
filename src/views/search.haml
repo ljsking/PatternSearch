@@ -2,9 +2,11 @@
 	%head
 		%meta{'http-equiv' => "content-type", :content => "text/html;charset=UTF-8"}
 		%link{:href=>'/stylesheet.css', :rel=>'stylesheet', :type=>'text/css'}
+		%script{:type=>"text/javascript", :src=>"/jquery.js"}
+		%script{:type=>"text/javascript", :src=>"/search.js"}
 %body
 	#main
-		#header
+		#headers
 			%form
 				Pattern Seach:
 				%input{:type=>"text", :name=>"query", :size=>55, :value=>@query}
