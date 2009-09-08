@@ -14,3 +14,8 @@ get '/search' do
   (1..10).each { |i| @results<<i.to_s+" "+@query } unless @query==''
   haml :search
 end
+
+get '/stylesheet.css' do
+  header 'Content-Type' => 'text/css; charset=utf-8'
+  sass :stylesheet
+end
