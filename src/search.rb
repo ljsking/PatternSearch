@@ -37,10 +37,8 @@ while english = gets
   verbs.each do |verb|
     qeuries<<"verbs:#{verb}"
   end
-  
-  puts "Searching time : #{Time.now-start_time} sec"
-  
   response = @conn.query(qeuries.join(" "))
+  puts "Searching time : #{Time.now-start_time} sec"
   puts "hits size: #{response.hits.size}"
   index=0
   response.hits.each do |hit|

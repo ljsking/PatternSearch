@@ -11,11 +11,11 @@
 				%input{:type=>"submit", :value=>"search"}
 		#contents
 			#information
-				%p
-					1-10results / 795,000,000 / 0.13 sec
+				%p="1-10results / 795,000,000 / #{(@elapsed_time*100).to_i/100.0} sec"
 			%ol
-				- @results.each do |rz|
+				- @hits.each do |hit|
 					%li
-						%h3
-							=rz
+						%h3=hit['korean']
+						#detail
+							%p="[#{(hit['score']*100).to_i/100.0}] #{hit['english']}"
 		
