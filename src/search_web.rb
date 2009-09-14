@@ -4,7 +4,7 @@ require 'haml'
 require 'Sass'
 require 'search'
 
-@search = Search.new
+@@search = Search.new
 
 get '/' do
   redirect("/search")
@@ -15,7 +15,7 @@ get '/search' do
   @query='' if @query==nil
   @hits = []
   start_time = Time.now
-  @hits=@search.search(@query) unless @query == ''
+  @hits=@@search.search(@query) unless @query == ''
   @elapsed_time=Time.now-start_time
   haml :search
 end

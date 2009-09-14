@@ -22,27 +22,41 @@ class Search
     return verbs
   end
   def search(english)
-    rz=@tagger.split(english)
-    english = rz[0]
-    
+    english = @tagger.split(english)[0]
     treebank = TreeBank.new(@tagger.tag(english))
-    patterns = treebank.make_patterns
-    sorted = (patterns.sort {|a,b| a[1]<=>b[1]} ).reverse
+    patterns = (treebank.make_patterns.sort {|a,b| a[1]<=>b[1]} ).reverse
 
-    pattern = sorted[0][0]
+    pattern = patterns[0][0]
     verbs = get_verbs(english, pattern)
     
+    return @conn.query(make_query(patterns, verbs)).hits
+  end
+  def change_alphabet(str)
+    rz=str.gsub(/—/) do |word|
+      word = '-'
+    end
+    return rz
+  end
+  def escape(str)
+    need_escaped = ['+', '-', '&&', '||', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\']
+    rz=str.gsub(/:/) do |word|
+      word = '\\'+word
+    end
+    return rz
+  end
+  def make_query(patterns, verbs)
     qeuries=[]
-    puts "Searching #{sorted[0][0]}"
-    sorted.each do |item|
+    patterns.each do |item|
       pattern=item[0]
       point=item[1]
+      pattern = change_alphabet pattern
+      pattern = escape pattern
       qeuries<<"(patterns:#{pattern})^#{point}" if point>0.1
     end
 
     verbs.each do |verb|
       qeuries<<"verbs:#{verb}"
     end
-    return @conn.query(qeuries.join(" ")).hits
+    return qeuries.join(" ")
   end
 end
